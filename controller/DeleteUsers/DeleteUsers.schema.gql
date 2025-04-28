@@ -1,0 +1,8 @@
+    input DeleteParameters{
+        id: Int
+        email: String
+    }
+
+    type Mutation{
+        deleteUser(filter: DeleteParameters!): Boolean!
+    }

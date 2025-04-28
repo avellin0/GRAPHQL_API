@@ -1,0 +1,35 @@
+ enum TipoPermissao{
+        admin
+        support
+        user
+    }
+
+    type permissoes {
+        id: Int
+        name: TipoPermissao
+    }
+
+    input UsuarioTypeInput{
+        name: String
+        email: String
+        age: Int 
+        phone: String
+    }
+
+
+    type Usuario{
+        id: Int 
+        name: String
+        email: String
+        age: Int 
+        phone: String
+        permissao: permissoes
+    }
+
+
+
+    type Query{
+        usuarios: [Usuario]
+        usuario(id: Int): Usuario
+    }
+
