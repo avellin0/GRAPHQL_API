@@ -1,20 +1,32 @@
 import {listaPermissao,listaUsuarios,SetNewUsers} from "../../db/database"
+import {prisma} from "../../prisma/index"
 
 const Usuario = {
-    permissao(args: any){
+    permissao: async(args: any) =>{
         console.log(args);
-        return listaPermissao.find((permission) => permission.id === args.permissao_id)
+
+        return prisma.permissoes.findMany({
+            where: {
+                User: {
+                    some: {id: args.id}
+                }    
+            }
+        })
     }
 }
 
 const Query = {
  
-    usuario(_,args){
-            return listaUsuarios.find((usuario) => usuario.id === args.id)
+    usuario: async(_,args) => {
+            return await prisma.user.findFirst({
+                where: {
+                    id: args.id
+                }
+            })
         },
     
-    usuarios(){
-        return listaUsuarios
+    usuarios: async() => {
+        return prisma.user.findMany()
     }
 }  
 

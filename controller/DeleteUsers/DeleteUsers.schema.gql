@@ -4,5 +4,5 @@
     }
 
     type Mutation{
-        deleteUser(filter: DeleteParameters!): Boolean!
+        deleteUser(filter: DeleteParameters): Boolean!
     }

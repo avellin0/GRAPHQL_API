@@ -1,18 +1,20 @@
-import {listaUsuarios} from "../../db/database"
+import {prisma} from "../../prisma"
 
 const Mutation = {
-    AtualizarUsuario(_, {id, data}){
-        const usuario =  listaUsuarios.find((u) => u.id === id)
-        const indice = listaUsuarios.findIndex((u) => u.id === id)
+    AtualizarUsuario: async(_, {id, data}) => {
 
-        const novoUsuario = {
-            ...usuario, 
-            ...data
-        }
+        const {name, email, phone} = data
 
-        listaUsuarios.splice(indice, 1, novoUsuario)
-        
-        return novoUsuario
+        return await prisma.user.update({
+            where: {
+                id: id
+            },
+            data: {
+                name: name,
+                email: email,
+                phone: phone
+            }
+        })
     }
 }
 

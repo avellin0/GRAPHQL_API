@@ -1,19 +1,16 @@
     input UsuarioTypeInput{
         name: String
         email: String
-        age: Int 
         phone: String
     }
 
     type Usuario{
-        id: Int 
         name: String
         email: String
-        age: Int 
         phone: String
         permissao: permissoes
     }
 
     type Mutation{
-        criarUsuario(data: UsuarioTypeInput): Usuario!
+        criarUsuario(data: UsuarioTypeInput): Usuario
     }

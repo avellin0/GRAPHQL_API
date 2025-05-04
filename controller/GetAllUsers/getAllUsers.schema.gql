@@ -31,5 +31,5 @@
     type Query{
         usuarios: [Usuario]
         usuario(id: Int): Usuario
-    }
+    }   
 

@@ -1,13 +1,15 @@
-import {listaUsuarios, SetNewUsers} from "../../db/database"
+import {prisma} from "../../prisma"
 
 const Mutation = {
-    deleteUser(_:any, {filter: {id }}){
-        const usuario =  listaUsuarios.find((u) => u.id === id )
-        const novosUsuarios = listaUsuarios.filter((u) => u.id !== id)
-        SetNewUsers(novosUsuarios)
-
+    deleteUser: async(_:any, {filter: {id,email}}) =>{
+        const usuarioDeletado = await prisma.user.delete({
+            where: {
+                id: id,
+                email: email
+            }
+        })
         
-        return !!usuario
+        return !!usuarioDeletado
     }
 }
 

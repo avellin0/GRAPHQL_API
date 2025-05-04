@@ -1,34 +1,22 @@
-import {listaPermissao,listaUsuarios,SetNewUsers} from "../../db/database"
 import {GraphQLError} from "graphql"
-
-function CreateId(lista: any[]){
-    let user: number;
-    const LastUser = lista[lista.length - 1]
-    if(LastUser){
-        user = LastUser.id
-    }else{
-        user = 0;
-    }
-
-    return ++user
-}
+import { prisma } from "../../prisma"
 
 const Mutation = {
-    criarUsuario(_, {data}){
-    
-      const {email} = data
+   criarUsuario: async(_, {data}) => {
+      
+
+        const {email,name,phone} = data
         
+        const UsuarioExiste = await prisma.user.findFirst({
+            where: {
+                email: email as string
+            }
+        })
 
-       const novoUsuario = {
-        ...data,
-        id: CreateId(listaUsuarios),
-        permissao_id: 3,
-        }
 
-
-        const UsuarioExiste = listaUsuarios.some((u) => u.email === email)
-
-        if(UsuarioExiste){
+        if(!UsuarioExiste){
+            console.log("Welcome")
+        }else{
             throw new GraphQLError("Usuario já existente", {
                 extensions: {
                     code: "BAD_USER_INPUT",
@@ -37,13 +25,18 @@ const Mutation = {
             })
         }
 
-
-        listaUsuarios.push(novoUsuario)
-
-       return novoUsuario
+        return await prisma.user.create({
+            data: {
+                name,
+                email,
+                phone
+            },
+            include: {
+                permissao: true
+            }              
+        })
     }
 }
-
 
 
 export {Mutation}
