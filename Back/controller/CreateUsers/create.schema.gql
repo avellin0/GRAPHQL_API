@@ -1,0 +1,17 @@
+    input UsuarioTypeInput{
+        name: String
+        email: String
+        phone: String
+    }
+
+    type Usuario{
+        name: String
+        email: String
+        phone: String
+        permissao: permissoes
+        token_id: String
+    }
+
+    type Mutation{
+        criarUsuario(data: UsuarioTypeInput): Usuario
+    }

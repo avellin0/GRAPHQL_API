@@ -1,0 +1,14 @@
+input TokenId{
+   id: String
+   access: String
+}
+
+type DecodedToken{
+    id: String
+    access: String
+}
+
+type Mutation{
+    JWT(data: TokenId): DecodedToken!
+}
+

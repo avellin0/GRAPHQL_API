@@ -1,0 +1,5 @@
+## Olá Caro Desenvolvedor(a)!
+
+Obrigado pela sua atenção. Atualmente criei um token usando Graphql e seus resolvers, Ainda tenho que fazer uma relação entre Usuarios e suas permições e tokens, algo como: "Sempre que um usuario logar ele tenha um token que busca a permissão" o token não deve estar em um banco de dados pois deve expirar e ser modificado. porém a permissão pode se manter no banco de dados, ou seja, o token de referenciar a permissão de cada usuario, toda vez que utilizar a aplicação.
+
+Boa sorte em seus códigos.
