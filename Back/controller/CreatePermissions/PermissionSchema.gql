@@ -1,0 +1,20 @@
+     enum TipoPermissao{
+        admin
+        support
+        user
+    }
+
+    type permissoes {
+        id: Int
+        name: TipoPermissao
+    }
+
+    input ValoresDePermissao{
+        id: Int
+        name: String
+    }
+
+    type Mutation{
+        createPermission(data: ValoresDePermissao): permissoes!
+    }
+

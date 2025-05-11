@@ -2,14 +2,15 @@
         name: String
         email: String
         phone: String
+        access: Int
     }
 
     type Usuario{
+        refresh_token: String
         name: String
         email: String
         phone: String
         permissao: permissoes
-        token_id: String
     }
 
     type Mutation{

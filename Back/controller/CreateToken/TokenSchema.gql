@@ -1,14 +1,16 @@
 input TokenId{
-   id: String
+   access_id: String
    access: String
+   refresh_token: String
 }
 
 type DecodedToken{
-    id: String
+    access_id: String
     access: String
+    token: String
 }
 
 type Mutation{
-    JWT(data: TokenId): DecodedToken!
+    JWT(data: TokenId!): DecodedToken!
 }
 

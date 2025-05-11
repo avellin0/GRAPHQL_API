@@ -1,9 +1,9 @@
-import {prisma} from "../../prisma"
+import { prisma } from "../../prisma"
 
 const Mutation = {
-    AtualizarUsuario: async(_, {id, data}) => {
+    AtualizarUsuario: async (_, { id, data }) => {
 
-        const {name, email, phone} = data
+        const { access_id, name, email, phone } = data
 
         return await prisma.user.update({
             where: {
@@ -12,7 +12,13 @@ const Mutation = {
             data: {
                 name: name,
                 email: email,
-                phone: phone
+                phone: phone,
+                permissao: {
+                    connect: { id: access_id }
+                }
+            },
+            include: {
+                permissao: true
             }
         })
     }
@@ -20,4 +26,4 @@ const Mutation = {
 
 
 
-export {Mutation}
+export { Mutation }

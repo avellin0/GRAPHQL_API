@@ -1,31 +1,37 @@
-import {sign} from "jsonwebtoken"
+import { sign } from "jsonwebtoken"
 
 const Mutation = {
-    JWT: async(_,{data}) => {
+    JWT: async (_, { data }) => {
 
-        const {id,access} = data;
-        
+        const {refresh_token,access_id, access} = data;
+
+
+        if(!refresh_token){
+            throw new Error("Token do usuario obrigatorio") 
+        }
+
         console.log(data.id);
-        
-    const token = sign({
-             userId: data.id,
-             access: data.access
-        },"jfkdjsldks",{
+
+        const token = sign({
+            userId: access_id,
+            user_token: refresh_token,
+            access: access
+        }, "MY_SECRET_KEY", {
             algorithm: "HS256",
-            expiresIn: "1h"
+            expiresIn: "1min"
         })
+
+ 
 
         const user = {
             token,
-            id,
+            access_id,
             access
         }
 
-        console.log(token);
-        console.log(user)
-
         return user
+
     }
 }
 
-export {Mutation}
+export { Mutation }

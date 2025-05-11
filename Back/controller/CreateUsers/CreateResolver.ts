@@ -1,10 +1,11 @@
 import {GraphQLError} from "graphql"
+import {sign} from "jsonwebtoken"
 import { prisma } from "../../prisma"
 
 const Mutation = {
     criarUsuario: async(_, {data}) => {
-        const {email,name,phone} = data
-        
+        const {id,email,name,phone,access} = data
+
         const UsuarioExiste = await prisma.user.findFirst({
             where: {
                 email: email as string
@@ -23,14 +24,34 @@ const Mutation = {
             })
         }
 
+
+
+        const RefreshToken = sign({
+            token_id: id,
+            access: access
+            },'MY_REFRESH_KEY',{
+                algorithm: "HS256",
+                expiresIn: "1m"
+            })
+
+           
+
         return await prisma.user.create({
             data: {
+                refresh_token: RefreshToken,
                 name,
                 email,
                 phone,
+                permissao: {
+                    connect: {
+                        id: 1,
+                        name: "user"
+                    }
+                }
             },
             include: {
-                permissao: true
+                permissao: true,
+                frind_info: true
             }              
         })
     },
