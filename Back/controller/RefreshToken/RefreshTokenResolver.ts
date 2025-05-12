@@ -27,7 +27,6 @@ const Mutation = {
             token
         }
         
-
         console.log(token);
 
         return user
