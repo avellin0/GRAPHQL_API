@@ -9,24 +9,35 @@ datasource db {
 }
 
 model Friend_relation {
-  relation_id Int  @id @default(autoincrement())
-  friend_id   Int  @unique
-  friend_info User @relation(fields: [friend_id], references: [id])
+  relation_id Int    @id @default(autoincrement())
+  friend_id   String @unique
+  friend_info User   @relation(fields: [friend_id], references: [id])
 }
 
 model Permissoes {
-  id   Int    @id @default(autoincrement())
+  id            Int    @id @default(autoincrement())
   permission_id Int
-  name String
-  User User[]
+  name          String
+  User          User[]
 }
 
 model User {
-  id            Int               @id @default(autoincrement())
+  id            String            @id @default(uuid())
   name          String
   phone         String?
   email         String            @unique
-  refresh_token String
   frind_info    Friend_relation[]
   permissao     Permissoes[]
+  refresh_token RefreshToken?
+
+  @@map("Usuarios")
+}
+
+model RefreshToken {
+  id       String @id @default(uuid())
+  expireIn Int
+  user     User   @relation(fields: [userId], references: [id])
+  userId   String @unique
+
+  @@map("Refresh_token")
 }

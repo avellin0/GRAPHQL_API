@@ -2,7 +2,7 @@
         name: String
         email: String
         phone: String
-        access: Int
+        access: String
     }
 
     type Usuario{

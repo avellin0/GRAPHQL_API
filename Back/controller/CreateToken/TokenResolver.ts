@@ -18,7 +18,7 @@ const Mutation = {
             access: access
         }, "MY_SECRET_KEY", {
             algorithm: "HS256",
-            expiresIn: "1min"
+            expiresIn: "30s"
         })
 
  

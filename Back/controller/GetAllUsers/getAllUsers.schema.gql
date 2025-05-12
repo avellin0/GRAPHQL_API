@@ -1,3 +1,8 @@
+    input UserInput{
+        email: String
+        token: String
+    }
+    
     type Usuario{
         id: Int 
         name: String
@@ -7,6 +12,6 @@
     }
     type Query{
         usuarios: [Usuario]
-        usuario(id: Int, token: String): Usuario
+        usuario(data: UserInput): Usuario
     }   
 

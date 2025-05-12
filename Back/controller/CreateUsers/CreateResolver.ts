@@ -28,10 +28,13 @@ const Mutation = {
 
         const RefreshToken = sign({
             token_id: id,
-            access: access
+            name,
+            email,
+            phone,
+            access
             },'MY_REFRESH_KEY',{
                 algorithm: "HS256",
-                expiresIn: "1m"
+                expiresIn: "30d"
             })
 
            

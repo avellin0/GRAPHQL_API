@@ -1,5 +1,6 @@
 import { prisma } from "../../prisma/index"
 import { verify } from "jsonwebtoken"
+import { CreateRefresh } from "../RefreshToken/CreateRefresh"
 
 const Usuario = {
     permissao: async (args: any) => {
@@ -19,85 +20,59 @@ const Usuario = {
 }
 
 const Query = {
-    usuario: async (_, args) => {
+    usuario: async (_, { data }) => {
 
-    try{
-    
-        const { id, token } = args
+        try {
 
-        interface DecodedToken {
-            token: String
-            userId: String
-            access: String
-        }
+            let { email, token } = data
 
-        const Refresh_Validate = await prisma.user.findFirst({
-            where: {
-                id: id
-            },
-            select: { refresh_token: true }
-        })
-
-        const refresh = Refresh_Validate?.refresh_token
-
-        if (!refresh) {
-            throw new Error("Usuário não tem refresh_token válido");
-        }
-
-        console.log("refresh que vem do banco:", refresh);
-        const HasUser = verify(token, "MY_SECRET_KEY") as DecodedToken;
-        console.log("HasUser:", HasUser);
-
-        const HasRefresh = verify(refresh, "MY_REFRESH_KEY") as DecodedToken;
-        console.log("HasRefresh:", HasRefresh);
-
-
-
-        if (!HasUser || HasUser.access !== "Admin") {
-            const mutation = `
-                mutation CreateUser($token: String!, $access: String!, $access_id: String!) {
-                    JWT(refresh_token: $token, access: $access, access_id: $access_id) {
-                        token
-                        access
-                        access_id
-                    }
-                }
-                `
-
-            const variable = {
-                token: refresh,
-                access: "admin",
-                access_id: "3"
+            interface DecodedToken {
+                token_id: String,
+                name: String
+                email: String
+                phone: String
+                access: String
             }
 
-            const response = await fetch("http://localhost:4000/", {
-                method: 'POST',
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    query: mutation,
-                    variables: variable
+                const refreshToken = await prisma.user.findFirst({
+                    where: {
+                        email: email
+                    },
+                    select: { refresh_token: true }
                 })
-            })
 
-            const new_token = await response.json()
-            console.log("novo token", new_token);
+                if (!refreshToken) {
+                    throw new Error("Usuario não possui refresh Token")
+                }
 
+                const user_refresh = refreshToken.refresh_token
+           
+            try {
+                 
+                verify(token, "MY_SECRET_KEY") as DecodedToken
 
-            return new_token.data
-        }
+                console.log(token,email);
+                
 
-
-
-        return await prisma.user.findFirst({
-            where: {
-                id: id
-            },
-            include: {
-                permissao: true
+                return await prisma.user.findFirst({
+                    where: {
+                        email: email
+                    },
+                    include: {
+                        permissao: true
+                    }
+                })
+            
+            }catch (err) {
+                const new_token = await CreateRefresh({ user_refresh })
+                return {
+                    message: "Token expirado. Novo token gerado.",
+                    token: new_token
+                  };
             }
-        })
 
-        }catch(err){
+
+        } catch (err) {
             console.error("Erro ao verificar token:", err.message);
             throw new Error("Token inválido ou expirado.");
         }

@@ -1,0 +1,15 @@
+
+input InputRefresh{
+    user_refresh: String
+}
+
+type RefreshToken{
+    expireIn: Int
+    User: Usuario
+    userId: String
+    token: String
+}
+
+type Mutation {
+    refreshToken(data: InputRefresh): RefreshToken
+}
