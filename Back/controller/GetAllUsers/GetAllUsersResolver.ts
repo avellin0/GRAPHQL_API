@@ -1,6 +1,5 @@
 import { prisma } from "../../prisma/index"
-import { verify } from "jsonwebtoken"
-import { CreateRefresh } from "../RefreshToken/CreateRefresh"
+import { Middleware } from "../Middleware/Middleware";
 
 const Usuario = {
     permissao: async (args: any) => {
@@ -20,62 +19,15 @@ const Usuario = {
 }
 
 const Query = {
-    usuario: async (_, { data }) => {
+    usuario: async (_, { data }, context: any) => {
+        const {email, token} = data
 
-        try {
+        const teste = await Middleware(email,token)
+        const newToken = context.new_token
 
-            let { email, token } = data
+        console.log(teste)  ;
+        console.log("esse é o teste:", newToken);
 
-            interface DecodedToken {
-                token_id: String,
-                name: String
-                email: String
-                phone: String
-                access: String
-            }
-
-                const refreshToken = await prisma.user.findFirst({
-                    where: {
-                        email: email
-                    },
-                    select: { refresh_token: true }
-                })
-
-                if (!refreshToken) {
-                    throw new Error("Usuario não possui refresh Token")
-                }
-
-                const user_refresh = refreshToken.refresh_token
-           
-            try {
-                 
-                verify(token, "MY_SECRET_KEY") as DecodedToken
-
-                console.log(token,email);
-                
-
-                return await prisma.user.findFirst({
-                    where: {
-                        email: email
-                    },
-                    include: {
-                        permissao: true
-                    }
-                })
-            
-            }catch (err) {
-                const new_token = await CreateRefresh({ user_refresh })
-                return {
-                    message: "Token expirado. Novo token gerado.",
-                    token: new_token
-                  };
-            }
-
-
-        } catch (err) {
-            console.error("Erro ao verificar token:", err.message);
-            throw new Error("Token inválido ou expirado.");
-        }
     },
 
     usuarios: async () => {

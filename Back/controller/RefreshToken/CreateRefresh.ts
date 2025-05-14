@@ -1,12 +1,12 @@
-import {sign} from "jsonwebtoken"
+import jwt from "jsonwebtoken"
 
 
-export async function CreateRefresh(data: {user_refresh: string}){
-
-    const token = sign({
+export async function CreateRefresh(user_refresh: string){
+ 
+    const token = jwt.sign({
         expireIn: 1,
         User: {},
-        userId: data.user_refresh
+        userId: user_refresh
     },"MY_SECRET_KEY",{
         algorithm: "HS256",
         expiresIn: "30s"

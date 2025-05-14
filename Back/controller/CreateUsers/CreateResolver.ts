@@ -37,11 +37,15 @@ const Mutation = {
                 expiresIn: "30d"
             })
 
-           
+        
 
         return await prisma.user.create({
             data: {
-                refresh_token: RefreshToken,
+                refresh_token: {
+                    connect: {
+                        userId: RefreshToken
+                    }
+                },
                 name,
                 email,
                 phone,

@@ -18,7 +18,7 @@ const Mutation = {
             throw new Error("Refresh Token não encontrado")
         }
 
-        const token = await CreateRefresh({user_refresh})
+        const token = await CreateRefresh(user_refresh)
 
         const user = {
             expireIn: 3000,

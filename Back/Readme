@@ -1,3 +1,1 @@
-## Olá Caro Desenvolvedor(a)!
-
-Pronto! criei um  refreshToken. Porém agora preciso criar algo para caso o usuario saia da aplicação o token seja expirado.
+Tenho que arrumar os CRUDs e resolver o problema do refreshToken pelos headers 
