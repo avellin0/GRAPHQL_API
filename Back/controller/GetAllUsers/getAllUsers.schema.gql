@@ -4,12 +4,14 @@
     }
     
     type Usuario{
-        id: Int 
+        id: String
         name: String
-        email: String      
+        email: String
+        phone: String
         permissao: permissoes
-        token_id: String
+        refresh_token: RefreshToken 
     }
+    
     type Query{
         usuarios: [Usuario]
         usuario(data: UserInput): Usuario

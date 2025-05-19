@@ -7,12 +7,14 @@ const Mutation = {
 
         return await prisma.permissoes.create({
             data: {
-                id,
+                permission_id: id,
                 name
             }
         })
+
+    }
  
     }
-}
+
 
 export {Mutation}

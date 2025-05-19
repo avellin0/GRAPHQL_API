@@ -4,7 +4,7 @@ import { prisma } from "../../prisma"
 
 const Mutation = {
     criarUsuario: async(_, {data}) => {
-        const {id,email,name,phone,access} = data
+        const {email,name,phone,access} = data
 
         const UsuarioExiste = await prisma.user.findFirst({
             where: {
@@ -24,10 +24,7 @@ const Mutation = {
             })
         }
 
-
-
         const RefreshToken = sign({
-            token_id: id,
             name,
             email,
             phone,
@@ -37,27 +34,29 @@ const Mutation = {
                 expiresIn: "30d"
             })
 
-        
+            String(RefreshToken)
+            
+            
+
+        if(!RefreshToken){
+            throw new Error("Não foi possivel criar um refreshtoken")
+        }
+
+
 
         return await prisma.user.create({
             data: {
-                refresh_token: {
-                    connect: {
-                        userId: RefreshToken
-                    }
-                },
                 name,
                 email,
                 phone,
-                permissao: {
-                    connect: {
-                        id: 1,
-                        name: "user"
+                refresh_token: {
+                    create: {
+                        expireIn: 30,
+                        token: RefreshToken
                     }
                 }
             },
             include: {
-                permissao: true,
                 frind_info: true
             }              
         })

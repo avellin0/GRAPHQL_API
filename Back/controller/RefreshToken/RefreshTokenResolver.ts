@@ -5,31 +5,22 @@ import { CreateRefresh } from "./CreateRefresh";
 const Mutation = {
     refreshToken: async (_, { data }) => {
 
-        const { user_refresh } = data
-            console.log(user_refresh);
+        const { user_id } = data
+            console.log(user_id);
 
-        const HasThisUserToken = await prisma.user.findFirst({
-            where: {
-                refresh_token: user_refresh
-            }
-        })
 
-        if(!HasThisUserToken){
-            throw new Error("Refresh Token não encontrado")
-        }
-
-        const token = await CreateRefresh(user_refresh)
+        const token = await CreateRefresh(user_id)
 
         const user = {
             expireIn: 3000,
             User: {},
-            userId: user_refresh,
+            userId: user_id,
             token
         }
-        
-        console.log(token);
 
-        return user
+        return await prisma.refreshToken.create({
+            data: user
+        })
     }
 }
 

@@ -22,7 +22,6 @@ export async function Middleware(email: string, token: string){
                     }                
                 })
 
-                console.log(refreshToken);
                 
 
                 if (!refreshToken) {

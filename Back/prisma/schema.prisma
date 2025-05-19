@@ -36,6 +36,7 @@ model User {
 model RefreshToken {
   id       String @id @default(uuid())
   expireIn Int
+  token    String @unique
   user     User   @relation(fields: [userId], references: [id])
   userId   String @unique
 

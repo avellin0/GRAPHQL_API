@@ -5,14 +5,21 @@
         access: String
     }
 
+    type RefreshToken{
+        id:       String 
+        expireIn: Int
+        user:     Usuario  
+        userId:   String     
+    }
+
     type Usuario{
-        refresh_token: String
         name: String
         email: String
         phone: String
         permissao: permissoes
+        refresh_token: RefreshToken
     }
 
     type Mutation{
-        criarUsuario(data: UsuarioTypeInput): Usuario
+        criarUsuario(data: UsuarioTypeInput): Usuario!
     }

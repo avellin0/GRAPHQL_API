@@ -1,6 +1,6 @@
 
 input InputRefresh{
-    user_refresh: String
+    user_id: String
 }
 
 type RefreshToken{
