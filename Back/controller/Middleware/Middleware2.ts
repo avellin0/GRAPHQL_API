@@ -1,8 +1,9 @@
 import jwt from "jsonwebtoken";
 import { prisma } from "../../prisma";
+import { CreateRefresh } from "../RefreshToken/CreateRefresh";
 
 export class Middleware {
-  async Authenticate(email: string, RefreshToken?: String, token?: string) {
+  async Authenticate(email: string, token?: string, RefreshToken?: String) {
     try {
       console.log(
         "this is the refresh:",
@@ -10,12 +11,6 @@ export class Middleware {
         "this is the token:",
         token
       );
-
-      if (token) {
-        await this.VerifyToken(token);
-      }
-
-        await this.VerifyRefresh(RefreshToken as string);
 
       const user = await prisma.user.findFirst({
         where: {
@@ -26,11 +21,43 @@ export class Middleware {
         },
       });
 
-      console.log("esse é o user:", user);
+      if (token && token.length > 0) {
+        const isValid = await this.VerifyToken(token);
 
-      return user;
+        if (isValid) {
+          console.log("Token Válido");
+          return user;
+        } else {
+          console.log("Token inválido, tentando RefreshToken...");
+
+          const confirmUser = await prisma.user.findFirst({
+            where: {
+              email,
+            },
+            select: {
+              refresh_token: true,
+            },
+          });
+
+          if (confirmUser?.refresh_token) {
+            RefreshToken = confirmUser.refresh_token.token;
+          }
+
+          const HasRefresh = await this.VerifyRefresh(RefreshToken as string);
+
+          if (HasRefresh) {
+            console.log("Bem vindo novamente");
+            const newToken = await this.CreateToken(RefreshToken);
+            token = newToken;
+            return user;
+          } else {
+            RefreshToken = await CreateRefresh(email);
+            return user;
+          }
+        }
+      }
     } catch (error) {
-      throw new Error(error);
+        throw new Error("Erro inesperado no middleware de autenticação", error);
     }
   }
 
@@ -39,9 +66,9 @@ export class Middleware {
       const isValid = jwt.verify(token as string, "MY_SECRET_KEY");
       console.log("Consegui!");
 
-      return isValid ?? false;
+      return true;
     } catch (error) {
-      throw new Error(error);
+      return false;
     }
   }
 
@@ -50,11 +77,35 @@ export class Middleware {
       const isValid = jwt.verify(RefreshToken as string, "MY_REFRESH_KEY");
       console.log("this is valid:", isValid);
 
-      return isValid ?? false;
+      return true;
     } catch (error) {
+      return false;
       throw new Error(error);
     }
   }
-}
 
-const teste = new Middleware();
+  async CreateToken(RefreshToken: any) {
+    const WhoIsYou = await prisma.user.findFirst({
+      where: {
+        refresh_token: {
+          token: RefreshToken,
+        },
+      },
+    });
+
+    console.log("Quem é você:", WhoIsYou);
+
+    const newToken = jwt.sign(
+      {
+        user: WhoIsYou,
+      },
+      "MY_SECRET_KEY",
+      {
+        algorithm: "HS256",
+        expiresIn: "15min",
+      }
+    );
+
+    return newToken;
+  }
+}
