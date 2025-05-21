@@ -3,6 +3,7 @@ import { prisma } from "../../prisma";
 import { CreateRefresh } from "../RefreshToken/CreateRefresh";
 
 export class Middleware {
+    
   async Authenticate(email: string, token?: string, RefreshToken?: String) {
     try {
       console.log(
