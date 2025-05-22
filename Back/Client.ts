@@ -2,11 +2,9 @@ import {ApolloServer} from "@apollo/server"
 import {startStandaloneServer} from "@apollo/server/standalone"
 import {makeExecutableSchema} from "@graphql-tools/schema"
 import {mergeTypeDefs, mergeResolvers} from "@graphql-tools/merge"
-import {loadFilesSync} from "@graphql-tools/load-files"
+import {loadFilesSync} from "@graphql-tools/load-files" 
 import path, {dirname} from "path"
 import { fileURLToPath } from "url"
-import { CreateRefresh } from "./controller/RefreshToken/CreateRefresh"
-import jwt from "jsonwebtoken"
 import { Middleware} from "./controller/Middleware/Middleware2"
 
 const __filename = fileURLToPath(import.meta.url)

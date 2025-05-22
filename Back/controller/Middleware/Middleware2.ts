@@ -1,10 +1,9 @@
 import jwt from "jsonwebtoken";
-import { prisma } from "../../prisma";
+import { prisma } from "../../prisma/index";
 import { CreateRefresh } from "../RefreshToken/CreateRefresh";
 
 export class Middleware {
-    
-  async Authenticate(email: string, token?: string, RefreshToken?: String) {
+  async Authenticate(email: string, token?: string, RefreshToken?: string) {
     try {
       console.log(
         "this is the refresh:",
@@ -13,14 +12,13 @@ export class Middleware {
         token
       );
 
+      
       const user = await prisma.user.findFirst({
         where: {
-          email,
-        },
-        include: {
-          refresh_token: true,
-        },
+          email
+        }
       });
+
 
       if (token && token.length > 0) {
         const isValid = await this.VerifyToken(token);
@@ -40,7 +38,7 @@ export class Middleware {
             },
           });
 
-          if (confirmUser?.refresh_token) {
+        if (confirmUser?.refresh_token ) {
             RefreshToken = confirmUser.refresh_token.token;
           }
 
@@ -48,9 +46,11 @@ export class Middleware {
 
           if (HasRefresh) {
             console.log("Bem vindo novamente");
+            
             const newToken = await this.CreateToken(RefreshToken);
             token = newToken;
             return user;
+
           } else {
             RefreshToken = await CreateRefresh(email);
             return user;
@@ -58,7 +58,8 @@ export class Middleware {
         }
       }
     } catch (error) {
-        throw new Error("Erro inesperado no middleware de autenticação", error);
+      console.error("Erro ao verificar refresh token", error);
+      return false;
     }
   }
 
@@ -75,13 +76,13 @@ export class Middleware {
 
   async VerifyRefresh(RefreshToken: string) {
     try {
-      const isValid = jwt.verify(RefreshToken as string, "MY_REFRESH_KEY");
-      console.log("this is valid:", isValid);
+      const RefreshTokenConfirm = jwt.verify(RefreshToken as string, "MY_REFRESH_KEY");
+      console.log("this is valid:", RefreshTokenConfirm);
 
       return true;
     } catch (error) {
+      console.error("Erro ao verificar refresh token", error);
       return false;
-      throw new Error(error);
     }
   }
 
