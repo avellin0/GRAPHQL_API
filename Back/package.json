@@ -30,6 +30,7 @@
     "dev": "tsx --watch client.ts",
     "server": "tsx --watch prisma/index.ts",
     "mid": "tsx --watch controller/Middleware/Middleware2.ts",
+    
     "build": "tsc && npm run copy:gql",
     "start": "node dist/Client.js",
 
