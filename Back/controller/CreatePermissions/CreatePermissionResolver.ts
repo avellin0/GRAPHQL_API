@@ -1,4 +1,4 @@
-import {prisma} from "../../Client"
+import {prisma} from "../../prisma/index"
 
  
 const Mutation = {

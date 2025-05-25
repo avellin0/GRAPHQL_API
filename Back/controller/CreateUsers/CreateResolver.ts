@@ -1,6 +1,6 @@
 import {GraphQLError} from "graphql"
 import {sign} from "jsonwebtoken"
-import { prisma } from "../../Client"
+import { prisma } from "../../prisma/index"
 
 const Mutation = {
     criarUsuario: async(_, {data}) => {
@@ -64,4 +64,4 @@ const Mutation = {
 }
 
 
-export {Mutation}
+export default {Mutation}

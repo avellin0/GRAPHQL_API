@@ -5,10 +5,6 @@ import {mergeTypeDefs, mergeResolvers} from "@graphql-tools/merge"
 import {loadFilesSync} from "@graphql-tools/load-files" 
 import path, {dirname} from "path"
 import { fileURLToPath } from "url"
-import {PrismaClient} from "@prisma/client"
-const prisma = new PrismaClient()
-
-export {prisma}
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)

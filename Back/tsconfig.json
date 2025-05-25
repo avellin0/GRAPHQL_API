@@ -7,6 +7,7 @@
     "rootDir": ".",                               
     "baseUrl": ".",                               
     "paths": {
+      "@client/*": ["Client/*"],
       "@prisma/*": ["node_modules/@prisma/*"]
     },
     "esModuleInterop": true,
@@ -14,5 +15,5 @@
     "resolveJsonModule": true,
     "forceConsistentCasingInFileNames": true
   },
-  "include": ["Back", "client.ts"]
+  "include": ["."]
 }

@@ -1,4 +1,4 @@
-import { prisma } from "../../Client";
+import { prisma } from "../../prisma/index";
 import { Middleware } from "../Middleware/Middleware2";
 
 const Usuario = {
@@ -35,4 +35,4 @@ const Query = {
   },
 };
 
-export { Query, Usuario };
+export default { Query, Usuario };

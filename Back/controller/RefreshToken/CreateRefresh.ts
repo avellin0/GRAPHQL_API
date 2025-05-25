@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken"
-import { prisma } from "../../Client";
+import { prisma } from "../../prisma/index";
 
 export {prisma}
 

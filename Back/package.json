@@ -4,6 +4,7 @@
     "@types/express": "^5.0.1",
     "@types/jsonwebtoken": "^9.0.9",
     "@types/node": "^22.15.21",
+    "cpx": "^1.5.0",
     "esbuild": "^0.25.4",
     "prisma": "^6.7.0",
     "ts-node": "^10.9.2",
@@ -29,9 +30,9 @@
     "dev": "tsx --watch client.ts",
     "server": "tsx --watch prisma/index.ts",
     "mid": "tsx --watch controller/Middleware/Middleware2.ts",
-    
-    "build": "tsc",
-    "start": "node dist/index.js"
+    "build": "tsc && npm run copy:gql",
+    "start": "node dist/Client.js",
 
+    "copy:gql": "cpx \"*/**/*.gql\" dist"
   }
 }

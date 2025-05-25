@@ -1,4 +1,4 @@
-import {prisma} from "../../Client"
+import {prisma} from "../../prisma/index"
 
 const Mutation = {
     deleteUser: async(_:any, {filter: {id,email}}) =>{
@@ -15,4 +15,4 @@ const Mutation = {
 
 
 
-export {Mutation}
+export default {Mutation}
