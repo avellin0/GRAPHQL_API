@@ -23,8 +23,7 @@
     "express": "^5.1.0",
     "graphql": "^16.11.0",
     "graphql-tools": "^9.0.18",
-    "jsonwebtoken": "^9.0.2",
-    "tsc": "^2.0.4"
+    "jsonwebtoken": "^9.0.2"
   },
   "scripts": {
     "dev": "tsx --watch client.ts",
