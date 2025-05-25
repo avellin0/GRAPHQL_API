@@ -5,7 +5,10 @@ import {mergeTypeDefs, mergeResolvers} from "@graphql-tools/merge"
 import {loadFilesSync} from "@graphql-tools/load-files" 
 import path, {dirname} from "path"
 import { fileURLToPath } from "url"
-import { Middleware} from "./controller/Middleware/Middleware2"
+import {PrismaClient} from "@prisma/client"
+const prisma = new PrismaClient()
+
+export {prisma}
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
@@ -22,8 +25,6 @@ const schema = makeExecutableSchema({resolvers, typeDefs})
 const server = new ApolloServer({
     schema
 })
-
-const middleware = new Middleware()
 
 
 const url = await startStandaloneServer(server)

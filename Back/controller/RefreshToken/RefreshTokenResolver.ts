@@ -1,6 +1,5 @@
-import {prisma} from "../../prisma/index"
 import { CreateRefresh } from "./CreateRefresh";
-
+import {prisma} from "./CreateRefresh"
 
 const Mutation = {
     refreshToken: async (_, { data }) => {

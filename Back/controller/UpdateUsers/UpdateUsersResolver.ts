@@ -1,4 +1,4 @@
-import { prisma } from "../../prisma"
+import { prisma } from "../../Client"
 
 const Mutation = {
     AtualizarUsuario: async (_, { id, data }) => {

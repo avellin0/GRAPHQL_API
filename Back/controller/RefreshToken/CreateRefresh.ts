@@ -1,5 +1,7 @@
 import jwt from "jsonwebtoken"
-import { prisma } from "../../prisma/index";
+import { prisma } from "../../Client";
+
+export {prisma}
 
 export async function CreateRefresh(email: string){
  

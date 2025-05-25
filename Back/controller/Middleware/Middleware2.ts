@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import { prisma } from "../../prisma/index";
+import { prisma } from "../../Client"
 import { CreateRefresh } from "../RefreshToken/CreateRefresh";
 
 export class Middleware {

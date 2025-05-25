@@ -1,4 +1,4 @@
-import { prisma } from "../../prisma/index";
+import { prisma } from "../../Client";
 import { Middleware } from "../Middleware/Middleware2";
 
 const Usuario = {
